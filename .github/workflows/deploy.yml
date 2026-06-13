@@ -1,0 +1,32 @@
+name: Deploy Nginx
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Update apt packages
+        run: sudo apt-get update
+
+      - name: Install Nginx
+        run: sudo apt-get install -y nginx
+
+      - name: Start Nginx
+        run: sudo systemctl start nginx
+
+      - name: Check Nginx status
+        run: sudo systemctl status nginx
+
+      - name: Copy index.html to Nginx
+        run: sudo cp index.html /var/www/html/index.html
+
+      - name: Verify deployment
+        run: curl http://localhost
